@@ -75,6 +75,12 @@ def main():
     # trash_ids= get_trashed(service)
     skim_ids = star_ids+sent_ids #+trash_ids
     skim(service,skim_ids,ids)
+    # final_ids = ids[::-1]
+    with open("log.txt","a") as log:
+        for id in ids:
+            trash = service.users().messages().trash(userId='me',id=id).execute()
+            log.write(str(trash)+"\n")
+            print(trash)
 
 if __name__ == "__main__":
   main()
