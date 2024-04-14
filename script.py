@@ -40,12 +40,21 @@ def get_starred(service):
         starred_ids.append(message_data['id'])
     return starred_ids
 
+def get_sent(service):
+    data = service.users().messages().list(userId='me',labelIds=['SENT'],maxResults=1000).execute()
+    sent_messages = data.get('messages',[])
+    sent_message_ids =[]
+    for message in sent_messages:
+        sent_message_ids.append(message['id'])
+    return sent_message_ids
+
 def main():
     service = create_service()
     ids = get_messages(service)
     if len(ids)==0:
         return
     star_ids = get_starred(service)
+    sent_ids = get_sent(service)
 
 if __name__ == "__main__":
   main()
