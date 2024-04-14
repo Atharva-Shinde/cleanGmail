@@ -48,6 +48,23 @@ def get_sent(service):
         sent_message_ids.append(message['id'])
     return sent_message_ids
 
+# def get_trashed(service):
+#     data = service.users().messages().list(userId='me',labelIds=['TRASH'],maxResults=2000).execute()
+#     trash_messages = data.get('messages',[])
+#     trash_message_ids =[]
+#     for message in trash_messages:
+#         # x = service.users().messages().get(userId='me',id=message['id']).execute()
+#         # print(x['snippet'])
+#         trash_message_ids.append(message['id'])
+#     return trash_message_ids
+
+def skim(service,skim_ids,ids):
+    for skim_id in skim_ids:
+        if skim_id in ids:
+            # message = service.users().messages().get(userId='me',id=skim_id).execute()
+            # print(message['snippet'])
+            ids.remove(skim_id)
+
 def main():
     service = create_service()
     ids = get_messages(service)
@@ -55,6 +72,9 @@ def main():
         return
     star_ids = get_starred(service)
     sent_ids = get_sent(service)
+    # trash_ids= get_trashed(service)
+    skim_ids = star_ids+sent_ids #+trash_ids
+    skim(service,skim_ids,ids)
 
 if __name__ == "__main__":
   main()
